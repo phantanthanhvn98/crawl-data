@@ -1,0 +1,7 @@
+version: '3'
+
+services:
+ crawlservice:
+     build: .
+     volumes:
+       - ./:/usr/src/data

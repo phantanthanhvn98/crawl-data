@@ -1,0 +1,34 @@
+
+# 🎉 Comco Products Crawling 🎉
+
+
+
+## Installation
+
+Install my-project with npm
+
+```bash
+    pip install -r requirements.txt
+```
+
+Test with a sample with Scrapy shell: 
+```bash
+    scrapy shell https://cimco.de/de/p/1000-v-seitenschneider-vde-gepruft-eingelegtes-gelenk-145-mm-12183053
+```
+    
+## Deployment
+
+To deploy this project run
+
+```bash
+  $ scrapy crawl products -o products.csv
+```
+
+
+## Authors
+
+
+- [@phantanthanhvn98](https://www.github.com/phantanthanhvn98)
+
+
+# 🎉 Comco Products Crawling 🎉
