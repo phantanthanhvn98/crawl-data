@@ -10,8 +10,9 @@ RUN apt-get install -y google-chrome-stable
 
 # install chromedriver
 RUN apt-get install -yqq unzip
-RUN wget -O /tmp/chromedriver.zip http://chromedriver.storage.googleapis.com/`curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE`/chromedriver_linux64.zip
-RUN unzip /tmp/chromedriver.zip chromedriver -d /usr/local/bin/
+RUN wget -O /tmp/chromedriver.zip https://storage.googleapis.com/chrome-for-testing-public/123.0.6312.58/linux64/chrome-linux64.zip
+RUN unzip /tmp/chromedriver.zip -d /usr/local/bin/
+RUN rm -f /tmp/chromedriver.zip
 
 # set display port to avoid crash
 ENV DISPLAY=:99
@@ -24,7 +25,10 @@ RUN pip install -r requirements.txt
 
 RUN rm -f ./requirements.txt
 
+RUN pip install --upgrade scrapy itemloaders
+
 ADD . ./src
 
 WORKDIR ./src
+
 ENTRYPOINT []

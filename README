@@ -16,12 +16,28 @@ Test with a sample with Scrapy shell:
     scrapy shell https://cimco.de/de/p/1000-v-seitenschneider-vde-gepruft-eingelegtes-gelenk-145-mm-12183053
 ```
     
-## Deployment
+## Testing
 
 To deploy this project run
 
 ```bash
   $ scrapy crawl products -o products.csv
+```
+
+## Deployment
+
+To deploy this project run
+
+```bash
+  $ docker-compose up --build
+```
+To deploy this project run aa background
+
+```bash
+  $ docker-compose up --build -d
+
+```bash
+  $ docker-compose down
 ```
 
 

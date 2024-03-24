@@ -32,7 +32,7 @@ class ProductsSpider(CrawlSpider):
 
     def get_ful_html(self, link):
         driver.get(link)
-        time.sleep(5)
+        time.sleep(8)
         try:
             shadow_root = driver.find_element(By.CSS_SELECTOR, "#usercentrics-root").shadow_root
             cookie_accept = shadow_root.find_element(By.CSS_SELECTOR, "button[data-testid='uc-accept-all-button']")
