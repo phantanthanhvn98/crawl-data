@@ -10,7 +10,22 @@ from itemadapter import is_item, ItemAdapter
 
 
 from scrapy import signals
-from scrapy.http import HtmlResponse
+from scrapy.http import HtmlResponse, Response
+
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.chrome.options import Options
+import time
+
+# RUN SELENIUM IN BACHGROUND
+chrome_options = Options()
+chrome_options.add_argument("--headless")
+chrome_options.add_argument('--no-sandbox')
+chrome_options.add_argument('--window-size=1920,1080')
+chrome_options.add_argument('--disable-gpu')
+driver = webdriver.Chrome(options=chrome_options)
+
         
 class ProductsSpiderMiddleware:
     # Not all methods need to be defined. If a method is not defined,
@@ -81,7 +96,27 @@ class ProductsDownloaderMiddleware:
         # - or return a Request object
         # - or raise IgnoreRequest: process_exception() methods of
         #   installed downloader middleware will be called
-        return None
+        driver.get(request.url)
+        time.sleep(5)
+        try:
+            shadow_root = driver.find_element(By.CSS_SELECTOR, "#usercentrics-root").shadow_root
+            cookie_accept = shadow_root.find_element(By.CSS_SELECTOR, "button[data-testid='uc-accept-all-button']")
+            cookie_accept.click()
+        except:
+            spider.logger.info("[COOKIES] ACCEPTED")
+        elements = driver.find_elements(By.CLASS_NAME, "styles_item__header__3rmna")
+        for element in elements:
+            if "Technische Details" in element.get_attribute("innerHTML"):
+                ActionChains(driver).move_to_element(element).click().perform()
+                time.sleep(0.3)
+        time.sleep(0.3)
+        body = str.encode(driver.page_source)
+        return HtmlResponse(
+                request.url,
+                body=body,
+                encoding='utf-8',
+                request=request
+            )
 
     def process_response(self, request, response, spider):
         # Called with the response returned from the downloader.
@@ -104,3 +139,8 @@ class ProductsDownloaderMiddleware:
 
     def spider_opened(self, spider):
         spider.logger.info("Spider opened: %s" % spider.name)
+
+    def spider_closed(self):
+        """Shutdown the driver when spider is closed"""
+
+        driver.quit()
